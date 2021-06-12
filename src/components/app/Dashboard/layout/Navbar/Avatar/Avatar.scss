@@ -1,0 +1,14 @@
+.profile-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: transparent;
+    overflow: hidden;
+
+    img{
+        width: 50px;
+    }
+}

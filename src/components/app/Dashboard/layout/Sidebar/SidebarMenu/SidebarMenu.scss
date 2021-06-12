@@ -1,0 +1,55 @@
+@import '../../../../../../styles/custom.scss';
+.menu-container{
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: #61738a59;
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin:0.5em 0;
+
+    &:hover > a  , &:hover svg{
+        transition: 0.5s all ease;
+        text-decoration: none;
+        color: lighten($color: $color-text-sidebar , $amount: 30%);
+    }
+   
+}
+
+.menu-item-container{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    
+    
+    p{
+        margin: 0;
+        flex-grow: 2;
+    }
+
+    div{
+        flex-grow: 1;
+        color:rgb(131, 145, 162);
+    }
+
+    :nth-child(3){
+        flex-grow: 3;
+        text-align: right;
+        
+    }
+}
+
+.sub-menu-item{
+    padding: 2px 5px 2px 30px ;
+    &:hover a {
+        transition: 0.5s all ease;
+        text-decoration: none;
+        color: lighten($color: $color-text-sidebar , $amount: 30%);
+    }
+}
+
+.active{
+    color: lighten($color: $color-text-sidebar , $amount: 30%);
+}

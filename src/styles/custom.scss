@@ -1,0 +1,15 @@
+// Override default variables before the import
+//$primary: rgb(255, 196, 32);
+
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+@import './global.scss';
+
+
+
+$color-text-sidebar:#8da9ca
+
+
+
+   

@@ -1,0 +1,44 @@
+@import '../../../../../styles/custom.scss';
+
+aside{
+    width: 250px;
+    height: 100vh;
+    background-color: #313a46;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 1em 0.5em;
+    color: $color-text-sidebar;
+    transition: 0.3s ease all;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    a{
+        color: $color-text-sidebar; 
+    }
+    svg{
+        color: $color-text-sidebar;
+        font-size: 15px;
+    }
+
+    .logo-container{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2em;
+
+    }
+}
+
+.sidebar-collapse{
+    //display: none;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    transition: 0.5s all ease;    
+    > *{
+        width: 0;
+        display: none;
+        transition: 0.5s ease-out all;
+    }
+}
