@@ -1,9 +1,10 @@
 @import '../../../../../styles/custom.scss';
 
+
 aside{
     width: 250px;
     height: 100vh;
-    background-color: #313a46;
+    background-color: $sidebar-bg;
     display: flex;
     flex-flow: column nowrap;
     padding: 1em 0.5em;

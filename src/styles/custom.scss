@@ -5,11 +5,32 @@
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 @import './global.scss';
+@import './variables.scss';
 
 
+.form-container{
+    padding: 1em 2em;
+    border: transparent;
+    box-shadow: $form-shadow;
+    border-radius: $border-radius;
+    width: 60%;
+    margin: 2em auto;
+    background-color: white;
+    margin-bottom: 1em;
 
-$color-text-sidebar:#8da9ca
+    @include media-breakpoint-up(md) { 
+        width: 80%;
+    }
+    @include media-breakpoint-up(sm) { 
+        width: 85%;
+    }
+    @include media-breakpoint-up(xs) { 
+        width: 90%;
+    }
+}
 
-
+.form-check{
+    margin-left: 1em;
+}
 
    

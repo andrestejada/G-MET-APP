@@ -1,7 +1,7 @@
 import React from 'react';
 import Gmet from '../../assets/logo.png';
 
-const Logo = ({width}) => {
+const Logo = ({width='50'}) => {
 
     const styles={
         width: `${width}px`

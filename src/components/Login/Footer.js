@@ -3,7 +3,11 @@ import React from 'react'
 const Footer = () => {
     return (
         <>
-            <footer className="footer mt-auto py-3 bg-dark">
+            <footer className="footer mt-auto py-3 bg-dark "
+                style={{
+                    height: '62px'
+                }}
+            >
                 <div className="container">
                     <span className="text-muted">Place sticky footer content here.</span>
                 </div>

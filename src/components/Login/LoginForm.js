@@ -7,6 +7,7 @@ import { signInAction } from '../../actions/authActions';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  
   const [error, setError] = useState(false)  
 
   const initialState = {
@@ -28,12 +29,12 @@ const LoginForm = () => {
       },2000)
       return;
     }
-
-    dispatch( signInAction(email,password) )
-    
+    dispatch( signInAction(email,password) ) 
   }
 
   return (
+    <>
+    
     <div className='login-form-container'>
       
       <Form
@@ -68,6 +69,7 @@ const LoginForm = () => {
         }
       </Form>
     </div>
+    </>
   )
 }
 

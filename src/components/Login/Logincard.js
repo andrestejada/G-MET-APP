@@ -1,17 +1,14 @@
 import React from 'react'
-import { Card, CardTitle, CardText, CardImg, CardImgOverlay } from 'reactstrap';
-import cardImg from '../../assets/metro-app-card.png'
+import Logo from '../logo/Logo';
+
 
 const Logincard = () => {
     return (
-      <div className='card-container d-sm-none d-md-block d-none ' >
-      <Card inverse  >
-        <CardImg src={cardImg} alt="Card image cap" />
-        <CardImgOverlay>
-          <CardTitle tag="h2">Metro App</CardTitle>
-          <CardText tag='p' >Lleva la gestion metrologica a otro nivel.</CardText>
-        </CardImgOverlay>
-      </Card>
+      <div className='card-container d-sm-none d-md-block d-none form-container' >
+        <Logo
+            width='200'
+        />
+        <h3>Lleva la Gestion Metrologica de tu empresa a otro nivel</h3>
     </div>
     )
 }

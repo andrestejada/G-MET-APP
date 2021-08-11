@@ -2,7 +2,6 @@ import React from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
 import * as AiIcons from 'react-icons/ai';
-import * as GrIcons from 'react-icons/gr';
 
 export const sidebarData = [
     {
@@ -58,6 +57,18 @@ export const sidebarData = [
         title: 'Consultas',
         path: '/dashboard/consultas',
         icon: <IoIcons.IoIosSearch />,
+        iconClosed: <FaIcons.FaAngleDown/>,
+        iconOpened:  <FaIcons.FaAngleRight/>,
+        subMenu:[
+            {
+                title: 'Equipos',
+                path: '/dashboard/consultas/equipos',
+            },
+            {
+                title: 'Patrones',
+                path: '/dashboard/consultas/patrones',
+            },
+        ]
     },
     {
         title: 'Reportes',
