@@ -20,7 +20,7 @@ const RegistroExitoso = () => {
         <RegisterSuccessContainer>
             <Jumbotron>
                 <h2 className="display-3">Registro Exitoso</h2>
-                <p className="lead">Para Iniciar sección en nuestra plataforma preciosa el siguiente botón</p>
+                <p className="lead">Para Iniciar sección en nuestra plataforma preciona el siguiente botón</p>
                 <hr className="my-2" />
                 <Button 
                     color="primary"

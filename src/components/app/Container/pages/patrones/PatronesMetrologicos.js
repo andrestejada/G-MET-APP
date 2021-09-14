@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback, Spinner  } from 'reactstrap'
-import { addMetrologicInfomation } from '../../../../../actions/patronesAction'
+import { addMetrologicInfomation } from '../../../../../helpers'
 import { mostrarAlerta, validarCodigo, validarMetrologicos } from '../../../../../helpers'
 import UseError from '../../../../../hooks/UseError'
 import { UseForm } from '../../../../../hooks/UseForm'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
+import { FrecuenciasList } from '../configuraciones/Frecuencias/FrecuenciasList'
+import MagnitudList from '../configuraciones/Magnitud/MagnitudList'
+import { UmedidaList } from '../configuraciones/UnidadDeMedida/UmedidaList'
 
 let alert;
 let mensaje;
@@ -13,20 +16,21 @@ const PatronesMetrologicos = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = UseError(5000)
     const dispatch = useDispatch();
+    const [cambiarMagnitud, setCambiarMagnitud] = useState('')
     const initialState={
         codigo:'123',
         responsable:'',
-        inferior:'30',
-        superior:'20',
-        valorNominal:'20',
-        divisiondeEscala:'20',
-        magnitud:'20',
-        resolucion:'20',
-        unidadDeMedida:'20',
-        verificacion:'30',
-        errorMaxPer:'30',
-        calibracion:'30',
-        trazabilidad:'20',       
+        inferior:'',
+        superior:'',
+        valorNominal:'',
+        divisiondeEscala:'',
+        magnitud:'',
+        resolucion:'',
+        unidadDeMedida:'',
+        verificacion:'',
+        errorMaxPer:'',
+        calibracion:'',
+        trazabilidad:'',       
         metrologia:true
     }
     const [formValues,handleOnChange] = UseForm(initialState);
@@ -80,6 +84,10 @@ const PatronesMetrologicos = () => {
             mensaje='El Codigo no existe , primero ingresa los datos basicos'
             return
         }       
+    }
+    const cambiarUmedida = e=>{
+        handleOnChange(e)
+        setCambiarMagnitud(e.target.value)
     }
     return (
         <>
@@ -137,7 +145,7 @@ const PatronesMetrologicos = () => {
                         </FormGroup>
                 </Col>
                 <Col md={8} >                    
-                    <h4>Nombre Pendiente</h4>
+                    <h4>Caracteristicas Metrologicas</h4>
                     <Row form >
                         <Col md={6}  >
                             <FormGroup>
@@ -156,11 +164,10 @@ const PatronesMetrologicos = () => {
                                 <Input 
                                     type="select"
                                     name='magnitud'
-                                    onChange={handleOnChange}            
+                                    onChange={cambiarUmedida}            
                                 >   
-                                    <option selected hidden disabled >Seleccione una magnitud</option>
-                                    <option value='30'>30</option>
-                                    <option value='40'>40</option>
+                                    <option selected hidden  >Seleccione una magnitud</option>
+                                    <MagnitudList/>
                                 </Input>
                             </FormGroup>
                         </Col>
@@ -182,10 +189,11 @@ const PatronesMetrologicos = () => {
                                     type="select"
                                     name='unidadDeMedida'
                                     onChange={handleOnChange}
-                                    value={unidadDeMedida}
+                                    value={cambiarUmedida}
                                 >
-                                    <option>Default Select</option>
-                                    <option>mts</option>
+                                    <UmedidaList
+                                        cambiarMagnitud={cambiarMagnitud}
+                                    />
                                 </Input>
                             </FormGroup>
                         </Col>
@@ -215,8 +223,8 @@ const PatronesMetrologicos = () => {
                             onChange={handleOnChange}
                             value={verificacion}
                         >
-                            <option>Default Select</option>
-                            <option>2</option>
+                            <option selected hidden >Seleccione una Frecuencias</option>
+                            <FrecuenciasList/>
                         </Input>
                     </FormGroup>
                     <FormGroup>
@@ -227,8 +235,8 @@ const PatronesMetrologicos = () => {
                             onChange={handleOnChange}
                             value={calibracion}
                         >
-                            <option>Default Select</option>
-                            <option>1</option>
+                            <option selected hidden >Seleccione una Calibracion</option>
+                            <FrecuenciasList/>
                         </Input>
                     </FormGroup>
                 </Col>

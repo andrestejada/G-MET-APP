@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-const UseError = (time=4000) => {
+const UseError = (time=5000) => {
     const [error, setError] = useState(false);
 
     setTimeout(() => {

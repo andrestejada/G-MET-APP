@@ -17,17 +17,7 @@ export const createNewPattern =(pattern)=>{
 }
 
 
-export const addMetrologicInfomation=(data)=>{
-    const {codigo} = data
-    return  async(dispatch,getState)=>{
-        const {user} = getState().auth;
-        await db.doc(`${user.empresa}/patrones/informacion/${codigo}`).update(data);
-        Swal.fire({
-            title: `Los datos metrologicos del patron ${codigo} se han guardado correctamente `,
-            icon:'success',            
-        })
-    }
-}
+
 
 
 export const checkDataPattern=(codigo)=>{

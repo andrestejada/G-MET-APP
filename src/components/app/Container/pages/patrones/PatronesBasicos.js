@@ -6,6 +6,8 @@ import { UseForm } from '../../../../../hooks/UseForm'
 import UseError from '../../../../../hooks/UseError'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
 import { createNewPattern } from '../../../../../actions/patronesAction'
+import { ResponsablesList } from '../configuraciones/Responsables/ResponsablesList'
+import { UbicacionesList } from '../configuraciones/Ubicaciones/UbicacionesList'
 let alert
 
 const PatronesBasicos = () => {
@@ -149,8 +151,8 @@ const PatronesBasicos = () => {
                   name='ubicacion'
                   placeholder='ubicacion'
                 >
-                  <option>Frabrica</option>
-                  <option>Laboratorio</option>
+                  <option  selected hidden >Selecciona un responsable</option>
+                  <UbicacionesList/>
                 </Input>
               </FormGroup>
             </Col>
@@ -166,8 +168,8 @@ const PatronesBasicos = () => {
                   name='responsable'
                   placeholder='Responsable'
                 >
-                  <option>Luis Tejada</option>
-                  <option>Andres Tejada</option>
+                  <option  selected hidden >Selecciona un responsable</option>
+                  <ResponsablesList/>
                 </Input>
               </FormGroup>
             </Col>

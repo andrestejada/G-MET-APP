@@ -4,8 +4,8 @@ import './SidebarMenu.scss'
 
 const SibarSubMenu = ({isOpenSubMenu,subMenu,setIsOpenSubMenu}) => {
   const noRender =()=>{
-    setIsOpenSubMenu(true)
-    console.log('se reanderizo denuevo')
+    setIsOpenSubMenu(true);
+    
   }
 
   return (

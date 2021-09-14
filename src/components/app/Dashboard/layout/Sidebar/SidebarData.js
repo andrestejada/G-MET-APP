@@ -87,6 +87,26 @@ export const sidebarData = [
                 title: 'Usuarios',
                 path: '/dashboard/usuarios',
             },
+            {
+                title: 'Responsables',
+                path: '/dashboard/configuraciones/responsables',
+            },
+            {
+                title: 'Ubicaciones',
+                path: '/dashboard/configuraciones/ubicaciones',
+            },
+            {
+                title: 'Unidad De Medida',
+                path: '/dashboard/configuraciones/unidad-medida',
+            },
+            {
+                title: 'Magnitud',
+                path: '/dashboard/configuraciones/magnitud',
+            },
+            {
+                title: 'Frecuencias',
+                path: '/dashboard/configuraciones/frecuencias',
+            },
             
         ]
     },

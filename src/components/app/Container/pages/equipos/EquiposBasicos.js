@@ -6,18 +6,20 @@ import { createNewEquipment } from '../../../../../actions/equiposAction'
 import { UseForm } from '../../../../../hooks/UseForm'
 import UseError from '../../../../../hooks/UseError'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
+import { ResponsablesList } from '../configuraciones/Responsables/ResponsablesList'
+import { UbicacionesList } from '../configuraciones/Ubicaciones/UbicacionesList'
 let alert
 
 const EquiposBasicos = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const initialState = {
-    codigo: '123',
-    modelo: '456',
-    serie: '789',
-    ubicacion: 'bodega',
-    marca: 'gato',
-    descripcion: 'una equipo',
-    responsable: 'luis'
+    codigo: '',
+    modelo: '',
+    serie: '',
+    ubicacion: '',
+    marca: '',
+    descripcion: '',
+    responsable: ''
   }
 
   const [loading, setLoading] = useState(false)
@@ -48,8 +50,8 @@ const EquiposBasicos = () => {
     }
 
     //validar el codigo
-    const codigoExiste = await dispatch(validarCodigo(codigo))
-    if (!codigoExiste) {
+    const codigoExiste = await dispatch(validarCodigo(codigo,'equipos'))
+    if (codigoExiste) {
       setError(true)
       alert = mostrarAlerta('El Codigo ya existe')
       setLoading(false)
@@ -63,15 +65,17 @@ const EquiposBasicos = () => {
 
   const handleOnBlur =async()=>{
     const codigoExiste = await dispatch(validarCodigo(codigo))
-    if (!codigoExiste) {
+    if (codigoExiste) {
       setError(true)
       return
     }
     setError(false)
-  }
+  };
+
+ 
   return (
     <>
-      <h2 className='text-center mt-3'>Ingreso de Equipos Basicos</h2>
+      <h2 className='text-center mt-3'>Ingreso de información basica de los Equipos</h2>
       <Form onSubmit={handleOnSubmit} className='form-container'>
         <Row>
           <Col md={4}>
@@ -150,8 +154,8 @@ const EquiposBasicos = () => {
                 name='ubicacion'
                 placeholder='ubicacion'
               >
-                <option>1</option>
-                <option>2</option>
+                 <option  selected hidden >Selecciona una Ubicacion</option>
+                 <UbicacionesList/>
               </Input>
             </FormGroup>
           </Col>
@@ -166,9 +170,9 @@ const EquiposBasicos = () => {
                 type='select'
                 name='responsable'
                 placeholder='Responsable'
-              >
-                <option>1</option>
-                <option>2</option>
+              > 
+                <option  selected hidden >Selecciona un responsable</option>
+                <ResponsablesList/>
               </Input>
             </FormGroup>
           </Col>

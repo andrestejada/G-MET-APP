@@ -5,7 +5,7 @@ export const validarMetrologicos =(codigo,documento='')=>{
         try {
             const {user} = getState().auth
             const resp = await db.doc(`/${user.empresa}/${documento}/informacion/${codigo}`).get()
-            if(resp.data().metrologia){
+            if(resp.data().metrologicos){
                 return true
             }else{
                 return false
