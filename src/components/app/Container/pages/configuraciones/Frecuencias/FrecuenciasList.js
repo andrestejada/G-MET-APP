@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 
-export const FrecuenciasList = () => {
+export const FrecuenciasList = ({frecuencia}) => {
     const {frecuencias} = useSelector(state => state.frecuencias)
     return (
         <>
@@ -11,7 +11,9 @@ export const FrecuenciasList = () => {
                     <option 
                         style={{textTransform:'capitalize'}}
                         key={f.dias} 
-                        value={f.dias} >{`${f.nombre} (${f.dias} dias)`}</option>
+                        value={ f.dias }
+                        selected={ f.dias === Number(frecuencia) ? true : null }
+                        >{`${f.nombre} (${f.dias} dias)`}</option>
                 )
             }
         </>

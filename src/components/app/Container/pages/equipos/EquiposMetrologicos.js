@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback  } from 'reactstrap'
-import { addMetrologicInfomation } from '../../../../../helpers'
-import { mostrarAlerta, validarCodigo, validarMetrologicos } from '../../../../../helpers'
+import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback ,Alert } from 'reactstrap'
+import { addMetrologicInfomation, validarCamposVacios } from '../../../../../helpers'
+import { validarCodigo, validarMetrologicos } from '../../../../../helpers'
 import UseError from '../../../../../hooks/UseError'
 import { UseForm } from '../../../../../hooks/UseForm'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
@@ -10,18 +10,15 @@ import { FrecuenciasList } from '../configuraciones/Frecuencias/FrecuenciasList'
 import MagnitudList from '../configuraciones/Magnitud/MagnitudList'
 import { UmedidaList } from '../configuraciones/UnidadDeMedida/UmedidaList'
 
-let alert;
-let mensaje;
 const EquiposMetrologicos = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
     const [error, setError] = UseError(5000);
-    const [cambiarMagnitud, setCambiarMagnitud] = useState('')
+    const [mensaje, setMensaje] = useState('')
     const initialState={
         codigo:'123',
         inferior:'',
         superior:'',
-        valorNominal:'',
         divisiondeEscala:'',
         magnitud:'',
         resolucion:'',
@@ -29,69 +26,76 @@ const EquiposMetrologicos = () => {
         verificacion:'',
         errorMaxPer:'',
         calibracion:'',
-        trazabilidad:'',       
         metrologicos:true,
         tolerancia:'',
+        servicio:'',
     }
-    const [formValues,handleOnChange] = UseForm(initialState);
+    const [formValues,handleOnChange,reset] = UseForm(initialState);
 
     const {
         codigo,        
         inferior,
         superior,
-        valorNominal,
         divisiondeEscala,        
         resolucion,
         unidadDeMedida,
         verificacion,
         calibracion,
-        trazabilidad,       
         errorMaxPer,
         tolerancia,
-        magnitud,
+        magnitud,        
     }= formValues;
 
     const handleSubmit=async(e)=>{
         setLoading(true)
         e.preventDefault();
-
         //validar el codigo
         const codigoExiste = await dispatch(validarCodigo(codigo,'equipos'))
         if (!codigoExiste) {
             setError(true)
-            mensaje='El Codigo no existe , primero ingresa los datos basicos'
-            alert = mostrarAlerta(mensaje)
+            setMensaje('El Codigo no existe , primero ingresa los datos basicos')
             setLoading(false)
-            console.log('el codigo no existe')
             return
         }
+        //validar que los datos metrologicos no existan
         const metrologicosExiste = await dispatch(validarMetrologicos(codigo,'equipos'))
         if (metrologicosExiste) {
             setError(true)
-            mensaje=`Los datos metrologicos del codigo ${codigo} ya existen`
-            alert = mostrarAlerta(mensaje)
+            setMensaje(`Los datos metrologicos del codigo ${codigo} ya existen`)
             setLoading(false)
-            console.log(`los datos metrologicos del codigo ${codigo} ya existen`)
             return
         }
+
+        //validar que todos lo campos esten llenos
+        const isCamposVacio = validarCamposVacios(formValues)
+        if(isCamposVacio){
+            setMensaje(`Todos los campos son obligatorios`)
+            setLoading(false)
+            setError(true)
+            return
+        }
+
         //agregar los datos metrologicos a la base de datos
         dispatch(addMetrologicInfomation(formValues,'equipos'))
         setLoading(false)
+        reset(initialState)
     }
 
     const handleOnBlur =async()=>{
+        setLoading(true)
+        //validar que el codigo existe
         const codigoExiste = await dispatch(validarCodigo(codigo,'equipos'))
         if (!codigoExiste) {
             setError(true)
-            mensaje='El Codigo no existe , primero ingresa los datos basicos'
+            setMensaje('El Codigo no existe , primero ingresa los datos basicos')
+            setLoading(false)       
             return
-        }       
+        }
+        setLoading(false)
+        setError(false)        
     }
 
-    const cambiarUmedida = e=>{
-        handleOnChange(e)
-        setCambiarMagnitud(e.target.value)
-    }
+    
     return (
         <>
         <h2 className='text-center mt-3'>Ingreso de los datos Metrologícos de los equipos</h2>
@@ -158,7 +162,8 @@ const EquiposMetrologicos = () => {
                                 <Input 
                                     type="select"
                                     name='magnitud'
-                                    onChange={cambiarUmedida}            
+                                    onChange={handleOnChange}
+                                    value={magnitud}            
                                 >   
                                     <option selected hidden >Seleccione una magnitud</option>
                                     <MagnitudList/>
@@ -187,7 +192,7 @@ const EquiposMetrologicos = () => {
                                 >
                                     <option selected hidden >Seleccione una Unidad de medida</option>
                                     <UmedidaList
-                                        cambiarMagnitud={cambiarMagnitud}
+                                        magnitud={magnitud}                                       
                                     />                                    
                                 </Input>
                             </FormGroup>
@@ -273,12 +278,13 @@ const EquiposMetrologicos = () => {
                 </Col>
                
             </Row>
-                {error && alert}
+                {error && <Alert color='danger' className='text-center mt-3'  >{mensaje}</Alert>}
             <Row>
             <Col md={12} md={{offset:4 , size:4 } }>
                 <Button
                     block
                     color='primary'
+                    disabled={loading}
                 >Ingresar</Button>                
             </Col>
             </Row>

@@ -76,6 +76,23 @@ export const sidebarData = [
         icon: <IoIcons.IoIosPaper />,
     },
     {
+        title: 'Programaciòn',
+        path: '/dashboard/programacion',
+        icon: <IoIcons.IoMdCalendar />,
+        iconClosed: <FaIcons.FaAngleDown/>,
+        iconOpened:  <FaIcons.FaAngleRight/>,
+        subMenu:[
+            {
+                title: 'Equipos',
+                path: '/dashboard/programacion/equipos',
+            },
+            {
+                title: 'Patrones',
+                path: '/dashboard/programacion/patrones',
+            },
+        ]
+    },
+    {
         title: 'Configuraciones',
         path: '/dashboard/usuarios',
         icon: <AiIcons.AiFillSetting/>,

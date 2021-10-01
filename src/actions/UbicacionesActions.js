@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { db } from "../firebase/firebase-config";
-import { ADD_NEW_LOCATION, GET_LOCATIONS } from "../types";
+import { AGREGAR_NUEVA_UBICACION,OBTENER_UBICACIONES } from "../types";
 
 export const ingresarNuevaUbicacion =(ubicacion={})=>{
     const {codigo ,nombre,} = ubicacion
@@ -55,12 +55,12 @@ export const consultarUbicaciones=()=>{
 }
 
 const getUbicaciones=(data)=>({
-    type:GET_LOCATIONS,
+    type:OBTENER_UBICACIONES,
     payload:data
 });
 
 const agregarNuevaUbicacion=(data)=>({
-    type:ADD_NEW_LOCATION,
+    type:AGREGAR_NUEVA_UBICACION,
     payload:data
 });
 

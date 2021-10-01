@@ -11,10 +11,7 @@ import {
   Alert
 } from 'reactstrap'
 import { ingresarNuevaFrecuencia } from '../../../../../../actions/frecuenciasActions'
-import {
-  ingresarNuevoResponsable,
-  validarResponsableExiste
-} from '../../../../../../actions/ResponsablesAction'
+import { validarCamposVacios } from '../../../../../../helpers'
 import UseError from '../../../../../../hooks/UseError'
 import { UseForm } from '../../../../../../hooks/UseForm'
 
@@ -32,7 +29,14 @@ const Frecuencia = () => {
   const handleOnsubmit = async e => {
     e.preventDefault()
     //validar campos
+    const camposVacios =validarCamposVacios(initialState)
+    if(camposVacios){
+      setMensaje('Todos los campos son obligatorios')
+      setError(true);
+      return
+    }
 
+    //parsear los dias
     const diasInt = parseInt(dias);   
     
     //guardar responsable
@@ -74,11 +78,15 @@ const Frecuencia = () => {
             </Button>
           </Col>
 
-          {error && (
-            <Alert className='mt-2' color='danger'>
-              {mensaje}
-            </Alert>
-          )}
+          {error 
+            ?
+              <Alert 
+                className='mt-2 text-center' 
+                color='danger'>
+                {mensaje}
+              </Alert>
+            : null
+          }
         </Form>
       </div>
     </>

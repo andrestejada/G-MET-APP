@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback, Spinner  } from 'reactstrap'
-import { addMetrologicInfomation } from '../../../../../helpers'
-import { mostrarAlerta, validarCodigo, validarMetrologicos } from '../../../../../helpers'
+import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback ,Alert } from 'reactstrap'
+import { addMetrologicInfomation, validarCamposVacios } from '../../../../../helpers'
+import {  validarCodigo, validarMetrologicos } from '../../../../../helpers'
 import UseError from '../../../../../hooks/UseError'
 import { UseForm } from '../../../../../hooks/UseForm'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
@@ -10,16 +10,16 @@ import { FrecuenciasList } from '../configuraciones/Frecuencias/FrecuenciasList'
 import MagnitudList from '../configuraciones/Magnitud/MagnitudList'
 import { UmedidaList } from '../configuraciones/UnidadDeMedida/UmedidaList'
 
-let alert;
-let mensaje;
+
 const PatronesMetrologicos = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = UseError(5000)
     const dispatch = useDispatch();
     const [cambiarMagnitud, setCambiarMagnitud] = useState('')
+    const [mensaje, setMensaje] = useState('')
+
     const initialState={
         codigo:'123',
-        responsable:'',
         inferior:'',
         superior:'',
         valorNominal:'',
@@ -30,10 +30,11 @@ const PatronesMetrologicos = () => {
         verificacion:'',
         errorMaxPer:'',
         calibracion:'',
-        trazabilidad:'',       
-        metrologia:true
+        trazabilidad:'',
+        servicio:'',       
+        metrologicos:true
     }
-    const [formValues,handleOnChange] = UseForm(initialState);
+    const [formValues,handleOnChange,reset] = UseForm(initialState);
 
     const {
         codigo,        
@@ -44,9 +45,9 @@ const PatronesMetrologicos = () => {
         resolucion,
         unidadDeMedida,
         verificacion,
-        calibracion,
-        trazabilidad,       
-        errorMaxPer
+        calibracion,               
+        errorMaxPer,
+        magnitud
     }= formValues;
 
     const handleSubmit=async(e)=>{
@@ -57,33 +58,44 @@ const PatronesMetrologicos = () => {
         const codigoExiste = await dispatch(validarCodigo(codigo,'patrones'))
         if (!codigoExiste) {
             setError(true)
-            mensaje='El Codigo no existe , primero ingresa los datos basicos'
-            alert = mostrarAlerta(mensaje)
+            setMensaje('El Codigo no existe , primero ingresa los datos basicos')
             setLoading(false)
-            console.log('el codigo no existe')
             return
         }
+        //validar de que los campos no esten vacion
+        const isCamposVacion = validarCamposVacios(formValues)
+        if(isCamposVacion){
+            setMensaje(`Todos los campos son obligatorios`)
+            setLoading(false)
+            setError(true)
+            
+            return
+        }
+        //que los datos metrologicos no existan
         const metrologicosExiste = await dispatch(validarMetrologicos(codigo,'patrones'))
         if (metrologicosExiste) {
             setError(true)
-            mensaje=`Los datos metrologicos del codigo ${codigo} ya existen`
-            alert = mostrarAlerta(mensaje)
+            setMensaje(`Los datos metrologicos del codigo ${codigo} ya existen`)
             setLoading(false)
-            console.log(`los datos metrologicos del codigo ${codigo} ya existen`)
             return
         }
         //agregar los datos metrologicos a la base de datos
-        dispatch(addMetrologicInfomation(formValues))
+        dispatch(addMetrologicInfomation(formValues,'patrones'))
         setLoading(false)
+        setError(false)
+        reset(initialState)
     }
 
     const handleOnBlur =async()=>{
+        setLoading(true)
         const codigoExiste = await dispatch(validarCodigo(codigo,'patrones'))
         if (!codigoExiste) {
             setError(true)
-            mensaje='El Codigo no existe , primero ingresa los datos basicos'
-            return
-        }       
+            setMensaje('El Codigo no existe , primero ingresa los datos basicos')
+            setLoading(false)
+            return;
+        }
+        setLoading(false)       
     }
     const cambiarUmedida = e=>{
         handleOnChange(e)
@@ -164,7 +176,8 @@ const PatronesMetrologicos = () => {
                                 <Input 
                                     type="select"
                                     name='magnitud'
-                                    onChange={cambiarUmedida}            
+                                    onChange={cambiarUmedida}
+                                    value={magnitud}            
                                 >   
                                     <option selected hidden  >Seleccione una magnitud</option>
                                     <MagnitudList/>
@@ -189,10 +202,11 @@ const PatronesMetrologicos = () => {
                                     type="select"
                                     name='unidadDeMedida'
                                     onChange={handleOnChange}
-                                    value={cambiarUmedida}
+                                    value={unidadDeMedida}
                                 >
+                                    <option selected hidden >Seleccione una Unidad de medida</option>
                                     <UmedidaList
-                                        cambiarMagnitud={cambiarMagnitud}
+                                        cambiarMagnitud={cambiarMagnitud}                                        
                                     />
                                 </Input>
                             </FormGroup>
@@ -248,8 +262,7 @@ const PatronesMetrologicos = () => {
                             type="radio" 
                             onChange={handleOnChange}
                             name="trazabilidad" 
-                            value='calibracion externa'
-                            
+                            value='calibracion externa'                            
                         />
                         Calibración Externa
                         </Label>
@@ -294,7 +307,7 @@ const PatronesMetrologicos = () => {
                 </Col>
                 
             </Row>
-                {error && alert}
+            {error ? <Alert color='danger' className='text-center mt-3'  >{mensaje}</Alert> : null}
             <Row>
             <Col md={12} md={{offset:4 , size:4 } }>
                 <Button

@@ -10,14 +10,15 @@ export const UseForm = ( initialState = {} ) => {
     }
 
 
-    const handleInputChange = ({ target }) => {
-
+    const handleInputChange = (e) => {
         setValues({
             ...values,
-            [ target.name ]: target.value
+            [ e.target.name ]: e.target.value
         });
-
+       
     }
+
+    
 
     return [ values, handleInputChange, reset ];
 

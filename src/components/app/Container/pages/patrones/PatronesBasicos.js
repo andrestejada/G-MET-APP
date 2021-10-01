@@ -1,30 +1,31 @@
 import React ,{useState} from 'react'
 import { useDispatch } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback } from 'reactstrap'
-import { validarCamposVacios,validarCodigo ,mostrarAlerta } from '../../../../../helpers'
+import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback, Alert } from 'reactstrap'
+import { validarCamposVacios,validarCodigo } from '../../../../../helpers'
 import { UseForm } from '../../../../../hooks/UseForm'
 import UseError from '../../../../../hooks/UseError'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
 import { createNewPattern } from '../../../../../actions/patronesAction'
 import { ResponsablesList } from '../configuraciones/Responsables/ResponsablesList'
 import { UbicacionesList } from '../configuraciones/Ubicaciones/UbicacionesList'
-let alert
 
 const PatronesBasicos = () => {
   const dispatch = useDispatch()
   const initialState = {
-    codigo: '123',
-    modelo: '456',
-    serie: '789',
-    ubicacion: 'maquina1',
-    marca: 'marca1',
-    descripcion: 'esta es una maquina de prueba',
-    responsable: 'luis tejada'
+    codigo: '',
+    modelo: '',
+    serie: '',
+    ubicacion: '',
+    marca: '',
+    descripcion: '',
+    responsable: ''
   }
 
-  const [formValues, handleInputChange] = UseForm(initialState)
+  const [formValues, handleInputChange,reset] = UseForm(initialState)
   const [loading, setLoading] = useState(false)
   const [error, setError] = UseError(5000)
+  const [mensaje, setMensaje] = useState('')
+  const [codigoError, setCodigoError] = useState(false)
 
   const {
     marca,
@@ -45,7 +46,7 @@ const PatronesBasicos = () => {
     if (validar) {
       setError(true)
       setLoading(false)
-      alert = mostrarAlerta('Todos los campos son obligatorios')
+      setMensaje('Todos los campos son obligatorios')
       return
     }
 
@@ -53,22 +54,29 @@ const PatronesBasicos = () => {
     const codigoExiste = await dispatch(validarCodigo(codigo,'patrones'))
     if (codigoExiste) {
         setError(true)
-        alert = mostrarAlerta('El Codigo ya existe')
+        setMensaje('El Codigo ya existe')
         setLoading(false)
-        console.log('el codigo ya existe')
       return
     }
+
+    
     //se envia el formulario a la base de datos
-    await dispatch(createNewPattern(formValues))
+    dispatch(createNewPattern(formValues))
     setLoading(false)
+    setError(false)
+    reset(initialState)
   }
 
   const handleOnBlur =async()=>{
     const codigoExiste = await dispatch(validarCodigo(codigo,'patrones'))
     if (codigoExiste) {
-      setError(true)
+      setMensaje(`El codigo ${codigo} ya existe , intenta con otro`)
+      setCodigoError(true)
+      setLoading(false)
       return
-    }    
+    }
+    setCodigoError(false)
+    setLoading(false)    
   }
     return (
         <>
@@ -86,7 +94,7 @@ const PatronesBasicos = () => {
                   name='codigo'
                   placeholder='Codigo'
                   autoFocus
-                  invalid={error}
+                  invalid={codigoError}
                 />
                 <FormFeedback >El codigo ya existe, Intenta con otro</FormFeedback>
               </FormGroup>
@@ -180,7 +188,7 @@ const PatronesBasicos = () => {
             </Button>
           </Col>
           {loading && <SpinnerCustom />}
-          {error && alert}
+          {error && <Alert className='text-center mt-3' color='danger' >{mensaje}</Alert>}
         </Form>
       </>
     )

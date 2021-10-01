@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback } from 'reactstrap'
-import { validarCamposVacios,validarCodigo ,mostrarAlerta } from '../../../../../helpers'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Form, FormGroup, Label, Input, Row, Col ,FormFeedback, Alert } from 'reactstrap'
+import { validarCamposVacios,validarCodigo  } from '../../../../../helpers'
 import { createNewEquipment } from '../../../../../actions/equiposAction'
 import { UseForm } from '../../../../../hooks/UseForm'
 import UseError from '../../../../../hooks/UseError'
 import SpinnerCustom from '../../../../Spinner/SpinnerCustom'
 import { ResponsablesList } from '../configuraciones/Responsables/ResponsablesList'
 import { UbicacionesList } from '../configuraciones/Ubicaciones/UbicacionesList'
-let alert
 
 const EquiposBasicos = () => {
   const dispatch = useDispatch();
@@ -23,9 +22,10 @@ const EquiposBasicos = () => {
   }
 
   const [loading, setLoading] = useState(false)
-  const [formValues, handleInputChange] = UseForm(initialState)
+  const [formValues, handleInputChange,reset] = UseForm(initialState)
   const [error, setError] = UseError(4000)
-
+  const [mensaje, setMensaje] = useState('')
+  const [codigoError, setCodigoError] = useState(false)
   const {
     marca,
     codigo,
@@ -35,17 +35,19 @@ const EquiposBasicos = () => {
     descripcion,
     responsable
   } = formValues
-
+  
   const handleOnSubmit = async e => {
     setLoading(true)
     e.preventDefault()
-
+  
+    
+        
     //validar si los campos estan vacios
     const validar = validarCamposVacios(formValues)
     if (validar) {
       setError(true)
       setLoading(false)
-      alert = mostrarAlerta('Todos los campos son obligatorios')
+      setMensaje('Todos los campos son obligatorios')
       return
     }
 
@@ -53,22 +55,27 @@ const EquiposBasicos = () => {
     const codigoExiste = await dispatch(validarCodigo(codigo,'equipos'))
     if (codigoExiste) {
       setError(true)
-      alert = mostrarAlerta('El Codigo ya existe')
+      setMensaje('El Codigo ya existe')
       setLoading(false)
-      console.log('el codigo ya existe')
       return
     }
+    
+     
     //se envia el formulario a la base de datos
-    await dispatch(createNewEquipment(formValues))
+    dispatch(createNewEquipment(formValues))
     setLoading(false)
+    setError(false)
+    reset(initialState)
   }
 
   const handleOnBlur =async()=>{
     const codigoExiste = await dispatch(validarCodigo(codigo))
     if (codigoExiste) {
-      setError(true)
+      setCodigoError(true)
+      setMensaje(`El codigo ${codigo} ya existe , intenta con otro`)
       return
     }
+    setCodigoError(false)
     setError(false)
   };
 
@@ -89,9 +96,9 @@ const EquiposBasicos = () => {
                 name='codigo'
                 placeholder='Codigo'
                 autoFocus
-                invalid={error}
+                invalid={codigoError}
               />
-              <FormFeedback >El codigo ya existe, Intenta con otro</FormFeedback>
+              <FormFeedback >{mensaje}</FormFeedback>
             </FormGroup>
           </Col>
           <Col md={4}>
@@ -153,6 +160,7 @@ const EquiposBasicos = () => {
                 type='select'
                 name='ubicacion'
                 placeholder='ubicacion'
+                defaultValue={ubicacion}
               >
                  <option  selected hidden >Selecciona una Ubicacion</option>
                  <UbicacionesList/>
@@ -183,7 +191,9 @@ const EquiposBasicos = () => {
           </Button>
         </Col>
         {loading && <SpinnerCustom />}
-        {error && alert}
+
+        
+        {error && <Alert className='text-center mt-3' color='danger' >{mensaje}</Alert>}
       </Form>
     </>
   )

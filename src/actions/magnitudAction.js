@@ -1,4 +1,3 @@
-import { bindActionCreators } from "redux";
 import Swal from "sweetalert2";
 import { db } from "../firebase/firebase-config";
 import { AGREGAR_NUEVA_MAGNITUD, OBTENER_MAGNITUDES } from "../types";
@@ -42,6 +41,7 @@ export const consultarMagnitudes=()=>{
           try {
             const {user} = getState().auth;
             const resp = await db.collection(`${user.empresa}/configuraciones/magnitud`).get()
+            
             let magnitudes=[]
             resp.forEach(doc=>{
                 magnitudes.push( doc.data());

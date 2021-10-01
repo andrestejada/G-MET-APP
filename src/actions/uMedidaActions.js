@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { db } from "../firebase/firebase-config";
-import { ADD_NEW_UNIT_MEASURE, GET_UNIT_MEASURE } from "../types";
+import { AGREGAR_NUEVA_UNIDAD_MEDIDA, OBTENER_UNIDAD_MEDIDAD } from "../types";
 
 export const ingresarNuevaUmedida =(uMedida={})=>{
     const {abreviaturaMin:abreviatura ,nombreMin:nombre,magnitud} = uMedida
@@ -57,11 +57,11 @@ export const consultarUmedida=()=>{
 
 
 const getUmedida=(data={})=>({
-    type:GET_UNIT_MEASURE,
+    type:OBTENER_UNIDAD_MEDIDAD,
     payload:data
 })
 
 const agregarNuevoUmedida=(data={})=>({
-    type:ADD_NEW_UNIT_MEASURE,
+    type:AGREGAR_NUEVA_UNIDAD_MEDIDA,
     payload:data
 });

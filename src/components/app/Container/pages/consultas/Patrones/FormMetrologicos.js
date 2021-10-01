@@ -6,6 +6,9 @@ import {
     Label,
     FormGroup,
   } from 'reactstrap';
+import { FrecuenciasList } from '../../configuraciones/Frecuencias/FrecuenciasList';
+import MagnitudList from '../../configuraciones/Magnitud/MagnitudList';
+import { UmedidaList } from '../../configuraciones/UnidadDeMedida/UmedidaList';
 const FormMetrologicos = ({handleInputChange,disabled,values}) => {
     const {
         inferior,
@@ -17,8 +20,7 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
         calibracion,
         trazabilidad,
         errorMaxPer,
-        servicio,
-        tolerancia,
+        servicio,        
         magnitud,
         valorNominal,
     }=values;
@@ -83,10 +85,9 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
                     name='magnitud'
                     onChange={handleInputChange}
                     disabled={disabled}
+                    value={magnitud}
                   >
-                    <option value={magnitud}>{magnitud}</option>
-                    <option value='30'>30</option>
-                    <option value='40'>40</option>
+                    <MagnitudList/>
                   </Input>
                 </FormGroup>
               </Col>
@@ -111,9 +112,11 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
                     onChange={handleInputChange}
                     value={unidadDeMedida}
                     disabled={disabled}
+                    
                     >
-                    <option>{unidadDeMedida}</option>
-                    <option>mts</option>
+                    <UmedidaList 
+                      cambiarMagnitud={magnitud}
+                    />
                   </Input>
                 </FormGroup>
               </Col>
@@ -144,8 +147,7 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
                             value={verificacion}
                             disabled={disabled}
                         >
-                            <option>{verificacion}</option>
-                            <option>2</option>
+                            <FrecuenciasList/>
                         </Input>
                     </FormGroup>
                     <FormGroup>
@@ -157,8 +159,7 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
                             value={calibracion}
                             disabled={disabled}
                         >
-                            <option>{calibracion}</option>
-                            <option>1</option>
+                            <FrecuenciasList/>
                         </Input>
                     </FormGroup>
                 </Col>

@@ -15,10 +15,6 @@ import Register from '../components/Register/Register';
 import { auth } from '../firebase/firebase-config';
 import { getUserProfile, loginSuccess} from '../actions/authActions';
 import SpinnerScreen from '../components/Spinner/SpinnerScreen';
-import { consultarResponbles } from '../actions/ResponsablesAction';
-import { consultarUbicaciones } from '../actions/UbicacionesActions';
-import { consultarUmedida } from '../actions/uMedidaActions';
-import { consultarMagnitudes } from '../actions/magnitudAction';
 import { dispararConsultas } from '../helpers/dispararConsultas';
 
 

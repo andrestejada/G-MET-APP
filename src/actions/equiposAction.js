@@ -42,7 +42,7 @@ const checkEquipment=(data)=>({
 });
 
 
-export const updateEquipment =(codigo,data)=>{
+export const updateEquipment =(codigo,data={})=>{
     return async(dispatch,getState)=>{
         try {
          const {user} = getState().auth;

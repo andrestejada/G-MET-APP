@@ -7,6 +7,7 @@ import {
     FormGroup,   
 } from 'reactstrap';
 import { ResponsablesList } from '../../configuraciones/Responsables/ResponsablesList';
+import { UbicacionesList } from '../../configuraciones/Ubicaciones/UbicacionesList';
 
 export const FormBasicos = ({handleInputChange,disabled,values}) => {
     const {
@@ -81,14 +82,15 @@ export const FormBasicos = ({handleInputChange,disabled,values}) => {
               <Label>Ubicacion</Label>
               <Input
                 onChange={handleInputChange}
-                value={ubicacion}
+                //value={ubicacion}
                 type='select'
                 name='ubicacion'
                 placeholder='ubicacion'
                 disabled={disabled}
               >
-                <option>Frabrica</option>
-                <option>Laboratorio</option>
+                <UbicacionesList
+                  ubicacion={ubicacion}
+                />
               </Input>
             </FormGroup>
           </Col>
@@ -97,14 +99,16 @@ export const FormBasicos = ({handleInputChange,disabled,values}) => {
               <Label>Responsable</Label>
               <Input
                 onChange={handleInputChange}
-                value={responsable}
+                //value={responsable}
                 type='select'
                 name='responsable'
                 placeholder='Responsable'
                 disabled={disabled}
               >
-                <option>{responsable}</option>
-                <ResponsablesList/>
+                
+                <ResponsablesList
+                  responsable={responsable}
+                />
               </Input>
             </FormGroup>
           </Col>

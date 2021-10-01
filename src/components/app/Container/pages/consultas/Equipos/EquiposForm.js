@@ -4,19 +4,26 @@ import {
   Row,
   Col,
   Button,
+  Alert,
 } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateEquipment } from '../../../../../../actions/equiposAction';
 import FormMetrologicos from './FormMetrologicos';
 import FormBasicos from './FormBasicos';
+import { convertirJSONaObjeto } from '../../../../../../helpers/convertirStringObjeto';
+import { convertirObjaJSON } from '../../../../../../helpers/convertirObjaJSON';
+import UseError from '../../../../../../hooks/UseError';
+import { validarCamposVacios } from '../../../../../../helpers';
 
 const EquiposForm = ({codigo}) => {
     const { consultas } = useSelector(state => state.equipos)
     const dispatch = useDispatch()
     const [disabled, setDisabled] = useState(true)
-    const [values, setValues] = useState(consultas)
-    
-  
+    const [values, setValues] = useState(consultas)  
+
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = UseError(5000)
+    const [mensaje, setMensaje] = useState('')
     useEffect(() => {
       setValues(consultas)
       setDisabled(true)
@@ -31,13 +38,22 @@ const EquiposForm = ({codigo}) => {
   
     const handleEdit = e => {
       setDisabled(false)
+
     }
   
     const handleOnSubmit = e => {
       e.preventDefault()
-      //validar campos vacios
+      //validar si los campos estan vacios
+      const validar = validarCamposVacios(values)
+      if (validar) {
+        setError(true)
+        setLoading(false)
+        setMensaje('Todos los campos son obligatorios')
+        return
+      }      
+     
       //actualizar los datos
-      dispatch(updateEquipment(codigo, values))
+      dispatch(updateEquipment(codigo,values))
     }
 
     if (!consultas) return null;
@@ -57,11 +73,14 @@ const EquiposForm = ({codigo}) => {
                     disabled={disabled}
                     handleInputChange={handleInputChange}
                     values={values}
+                    setValues={setValues}
                 />
                 : null
         }
         
-        
+        {
+          error ? <Alert color='danger' className='text-center mt-3' >{mensaje}</Alert> : null
+        }
         <Row>
             <Col md={4}>
             <Button block color='primary' onClick={handleEdit}>

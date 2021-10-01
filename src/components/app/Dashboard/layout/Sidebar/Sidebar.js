@@ -10,7 +10,7 @@ const Sidebar = () => {
     const {isCollapse} = useSelector(state => state.ui)
 
     return (
-        <aside className={ isCollapse && 'sidebar-collapse ' } >
+        <aside className={ isCollapse ? 'sidebar-collapse ':null } >
             <div className='logo-container'>
                 <Logo
                     width='50'

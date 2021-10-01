@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form ,Input ,Row,Col,Button ,FormGroup, Label, Alert } from 'reactstrap'
 import { ingresarNuevaMagnitud, validarMagnitudExiste } from '../../../../../../actions/magnitudAction'
-import { ingresarNuevoResponsable, validarResponsableExiste } from '../../../../../../actions/ResponsablesAction'
 import UseError from '../../../../../../hooks/UseError'
 import { UseForm } from '../../../../../../hooks/UseForm'
 
