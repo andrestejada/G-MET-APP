@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Row,
     Col,
@@ -103,10 +103,12 @@ const FormMetrologicos = ({handleInputChange,disabled,values}) => {
                                     //value={unidadDeMedida}
                                     onChange={handleInputChange}
                                     disabled={disabled}
+                                    
                                 >
+                                    <option selected hidden value='' >seleccione una unidad de medida</option>
                                     <UmedidaList 
                                         umedida={unidadDeMedida}
-                                        magnitud={magnitud} 
+                                        magnitud={magnitud}                                         
                                     />
                                 </Input>
                             </FormGroup>

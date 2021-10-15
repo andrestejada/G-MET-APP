@@ -9,7 +9,6 @@ const ProgramacionRoutes = () => {
     return (
         <Switch>
             <Route exact path={`${path}/equipos`} component={ProgramacionEquipos}/>
-            <Route exact path={`${path}/patrones`} component={<p>patrones</p>}/>
         </Switch>
     )
 }

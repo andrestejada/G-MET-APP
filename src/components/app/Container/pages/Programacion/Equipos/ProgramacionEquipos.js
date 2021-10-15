@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Col, Form, FormGroup, Input, Label, Row ,Alert } from 'reactstrap'
 import UseError from '../../../../../../hooks/UseError'
 import { UseForm } from '../../../../../../hooks/UseForm'
@@ -15,6 +15,7 @@ const ProgramacionEquipos = () => {
     const [mensaje, setMensaje] = useState('')
     const [error ,setError]=UseError()
     const [loading, setLoading] = useState(false)
+
     const handleOnsubmit = async(e)=>{
       e.preventDefault();
       setLoading(true)
@@ -73,8 +74,8 @@ const ProgramacionEquipos = () => {
             {
               error ? <Alert color='danger' className='mt3' >{mensaje}</Alert> :null
             }
-        <InformacionEquipos/>
         </Form>
+        <InformacionEquipos />
             
       </>
     )

@@ -17,8 +17,9 @@ export const UmedidaList = ({ magnitud,umedida}) => {
                 uMedidasFiltradas.map(m=>
                     <option 
                         key={m.abreviatura} 
-                        value={ m.abreviatura }
+                        value={ m.abreviatura }                        
                         selected={ (m.abreviatura === umedida) ? true : null  }
+                                     
                         >{`${m.nombre} (${m.abreviatura})`}
                     </option>
                 )

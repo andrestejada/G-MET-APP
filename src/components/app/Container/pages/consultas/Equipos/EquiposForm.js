@@ -10,8 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateEquipment } from '../../../../../../actions/equiposAction';
 import FormMetrologicos from './FormMetrologicos';
 import FormBasicos from './FormBasicos';
-import { convertirJSONaObjeto } from '../../../../../../helpers/convertirStringObjeto';
-import { convertirObjaJSON } from '../../../../../../helpers/convertirObjaJSON';
 import UseError from '../../../../../../hooks/UseError';
 import { validarCamposVacios } from '../../../../../../helpers';
 
@@ -30,6 +28,16 @@ const EquiposForm = ({codigo}) => {
     }, [consultas])
   
     const handleInputChange = e => {
+
+      if(e.target.name === 'magnitud'){
+        setValues({
+          ...values,
+          [e.target.name]: e.target.value,
+          unidadDeMedida:''
+        });
+        return
+      }
+
       setValues({
         ...values,
         [e.target.name]: e.target.value
@@ -38,7 +46,6 @@ const EquiposForm = ({codigo}) => {
   
     const handleEdit = e => {
       setDisabled(false)
-
     }
   
     const handleOnSubmit = e => {
@@ -72,8 +79,7 @@ const EquiposForm = ({codigo}) => {
                 ? <FormMetrologicos
                     disabled={disabled}
                     handleInputChange={handleInputChange}
-                    values={values}
-                    setValues={setValues}
+                    values={values}                    
                 />
                 : null
         }

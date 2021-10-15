@@ -62,3 +62,21 @@ export const updateEquipment =(codigo,data={})=>{
 export const cleanCheking=()=>({
     type:CLEAN_CHECKING
 })
+
+export const programarEquipo =(equipment)=>{
+
+    const {codigo,...rest} =equipment
+    return async (dispatch,getState)=>{
+
+        const {user} = getState().auth;
+        await db.doc(`${user.empresa}/equipos/programacion/${codigo}`).set({
+            codigo,
+            ...rest            
+        })
+        Swal.fire({
+            title: `El equipo ${codigo} se ha Programado correctamente`,
+            icon:'success',            
+        })
+        dispatch(cleanCheking())
+    }
+}
